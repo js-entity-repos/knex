@@ -1,0 +1,18 @@
+language: node_js
+node_js: 8
+sudo: false
+
+notifications:
+  email: false
+
+before_script:
+  - npm prune
+
+script:
+  - npm run build
+  - npm run cover-ci
+  - npm run lint
+  - npm run duplication -- --limit 10
+
+after_success:
+  - npm run semantic-release
