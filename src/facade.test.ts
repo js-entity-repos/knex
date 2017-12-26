@@ -5,6 +5,7 @@ import 'mocha'; // tslint:disable-line:no-import-side-effect
 import facade from './facade';
 import connectToDb from './utils/connectToDb';
 config();
+console.log('knexpassword', process.env.KNEX_PASSWORD);
 
 const db = connectToDb({
   client: 'mysql',
