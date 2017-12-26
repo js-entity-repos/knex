@@ -26,15 +26,28 @@ export interface TodoEntity extends TodoId {
 
 ```ts
 import FacadeConfig from '@js-entity-repos/knex/dist/Config';
-import connectToCollection from '@js-entity-repos/knex/dist/utils/connectToCollection';
+import connectToDb from '@js-entity-repos/knex/dist/utils/connectToDb';
 
 const todoFacadeConfig: FacadeConfig = {
-  collection: connectToCollection({
-    collectionName: 'todos',
-    dbName: 'todoapp',
-    url: 'knexdb://localhost:27017',
+  constructDocument: (id, patch) => {
+    // Converts an entity to a document for the database.
+    return { ...patch, ...id }
+  },
+  constructEntity: (document) => {
+    // Converts a document from the database to an entity.
+    return document;
+  },
+  db: connectToDb({
+    client: 'mysql',
+    connection: {
+      database: 'todoapp',
+      host: '127.0.0.1',
+      password: 'pword',
+      user: 'todouser',
+    },
   }),
   entityName: 'todo',
+  tableName: 'todos',
 };
 ```
 
