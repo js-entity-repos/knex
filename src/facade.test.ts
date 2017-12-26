@@ -1,16 +1,18 @@
 import facadeTest from '@js-entity-repos/core/dist/tests';
 import { TestEntity, TestId } from '@js-entity-repos/core/dist/tests/utils/testEntity';
+import { config } from 'dotenv';
 import 'mocha'; // tslint:disable-line:no-import-side-effect
 import facade from './facade';
 import connectToDb from './utils/connectToDb';
+config();
 
 const db = connectToDb({
   client: 'mysql',
   connection: {
-    database: 'jsentityreposknex',
+    database: process.env.KNEX_DATABASE,
     host: '127.0.0.1',
-    password: 'pword',
-    user: 'jsentityrepos',
+    password: process.env.KNEX_PASSWORD,
+    user: process.env.KNEX_USER,
   },
 });
 
