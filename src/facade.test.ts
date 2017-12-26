@@ -11,7 +11,6 @@ const db = connectToDb({
   connection: {
     database: process.env.KNEX_DATABASE,
     host: '127.0.0.1',
-    password: process.env.KNEX_PASSWORD,
     user: process.env.KNEX_USER,
   },
 });
