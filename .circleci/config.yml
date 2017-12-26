@@ -32,13 +32,6 @@ jobs:
           name: Compiling Code
           command: npm run build
       - run:
-          name: MySQL Setup
-          command: |
-            mysql -e "CREATE DATABASE IF NOT EXISTS jsentityreposknex;" -uroot
-            mysql -e "CREATE USER 'jsentityrepos'@'127.0.0.1' IDENTIFIED BY 'pword';" -uroot;
-            mysql -e "GRANT ALL PRIVILEGES ON * . * TO 'jsentityrepos'@'127.0.0.1';" -uroot;
-            mysql -e "FLUSH PRIVILEGES;" -uroot;
-      - run:
           name: Running tests
           command: npm run cover
       - run:
