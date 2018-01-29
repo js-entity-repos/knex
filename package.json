@@ -37,7 +37,7 @@
     "@types/lodash": "4.14.98",
     "@types/mocha": "2.2.47",
     "assert-rejects": "0.1.1",
-    "dotenv": "4.0.0",
+    "dotenv": "5.0.0",
     "jscpd": "0.6.17",
     "mocha": "4.1.0",
     "mysql": "2.15.0",
