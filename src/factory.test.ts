@@ -23,7 +23,7 @@ const tableName = 'testentities';
 before(async () => {
   const schema = (await db()).schema;
   await Promise.resolve(schema.dropTableIfExists(tableName));
-  await Promise.resolve(schema.createTableIfNotExists(tableName, async (table) => {
+  await Promise.resolve(schema.createTable(tableName, async (table) => {
     table.string('id').unique();
     table.string('stringProp');
     table.float('numberProp');
