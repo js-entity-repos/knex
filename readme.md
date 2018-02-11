@@ -4,39 +4,45 @@
 ### Usage
 1. Install it with `npm i @js-entity-repos/knex`.
 1. For each entity you will need to do the following.
-    1. [Create Id and Entity interfaces](#id-and-entity-interface).
-    1. [Create a facade config](#facade-config).
-    1. [Construct the facade with the config and interfaces](#calling-the-facade).
+    1. [Create an Entity interfaces](#entity-interface).
+    1. [Create a factory config](#factory-config).
+    1. [Construct the facade](#construct-the-facade).
     1. [Use the facade](https://github.com/js-entity-repos/core/blob/master/docs/facade.md).
 
-### Id and Entity Interface
+### Entity Interface
 
 ```ts
-export interface TodoId {
-  readonly id: string;
-}
+import Entity from '@js-entity-repos/core/dist/types/Entity';
 
-export interface TodoEntity extends TodoId {
+export interface TodoEntity extends Entity {
   readonly description: string;
   readonly completed: boolean;
 }
 ```
 
-### Facade Config
+### Factory Config
 
 ```ts
-import FacadeConfig from '@js-entity-repos/knex/dist/Config';
+import FactoryConfig from '@js-entity-repos/knex/dist/FactoryConfig';
 import connectToDb from '@js-entity-repos/knex/dist/utils/connectToDb';
 
-const todoFacadeConfig: FacadeConfig = {
-  constructDocument: (id, patch) => {
-    // Converts an entity to a document for the database.
-    return { ...patch, ...id }
+const todoFactoryConfig: FactoryConfig<TodoEntity> = {
+  constructDocument: (patch) => {
+    // Optional property that converts an entity to a document for the database.
+    return patch;
   },
   constructEntity: (document) => {
-    // Converts a document from the database to an entity.
+    // Optional property that converts a document from the database to an entity.
     return document;
   },
+  constructFilter: (filter) => {
+    // Optional property that converts an entity filter to a filter for the DB.
+    return filter;
+  },
+  constructSort: (sort) => {
+    // Optional property that converts an entity sort to a sort for the DB.
+    return sort;
+  }.
   db: connectToDb({
     client: 'mysql',
     connection: {
@@ -46,6 +52,7 @@ const todoFacadeConfig: FacadeConfig = {
       user: 'todouser',
     },
   }),
+  defaultPaginationLimit: 100, // Optional property.
   entityName: 'todo',
   tableName: 'todos',
 };
@@ -54,7 +61,7 @@ const todoFacadeConfig: FacadeConfig = {
 ### Construct the Facade
 
 ```ts
-import facade from '@js-entity-repos/knex/dist/facade';
+import factory from '@js-entity-repos/knex/dist/factory';
 
-const todosFacade = facade<TodoId, TodoEntity>(todoFacadeConfig);
+const todosFacade = factory(todoFactoryConfig);
 ```

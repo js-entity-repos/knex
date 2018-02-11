@@ -1,12 +1,15 @@
 import MissingEntityError from '@js-entity-repos/core/dist/errors/MissingEntityError';
 import RemoveEntity from '@js-entity-repos/core/dist/signatures/RemoveEntity';
-import Config from '../Config';
+import Entity from '@js-entity-repos/core/dist/types/Entity';
+import FacadeConfig from '../FacadeConfig';
+import constructIdFilter from '../utils/constructIdFilter';
 import filterEntities from '../utils/filterEntities';
 
-export default <Id, Entity extends Id>(config: Config<Id, Entity>): RemoveEntity<Id> => {
-  return async ({ id }) => {
-    const table = config.db.table(config.tableName);
-    const count = await Promise.resolve(filterEntities(table, id).delete());
+export default <E extends Entity>(config: FacadeConfig<E>): RemoveEntity<E> => {
+  return async ({ id, filter = {} }) => {
+    const table = (await config.db()).table(config.tableName);
+    const constructedFilter = constructIdFilter({ id, filter, config });
+    const count = await Promise.resolve(filterEntities(table, constructedFilter).delete());
 
     if (count === 0) {
       throw new MissingEntityError(config.entityName, id);
