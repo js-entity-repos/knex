@@ -1,10 +1,12 @@
 import RemoveEntities from '@js-entity-repos/core/dist/signatures/RemoveEntities';
-import Config from '../Config';
+import Entity from '@js-entity-repos/core/dist/types/Entity';
+import FacadeConfig from '../FacadeConfig';
 import filterEntities from '../utils/filterEntities';
 
-export default <Id, Entity extends Id>(config: Config<Id, Entity>): RemoveEntities<Entity> => {
-  return async ({ filter }) => {
-    const table = config.db.table(config.tableName);
-    await Promise.resolve(filterEntities(table, filter).delete());
+export default <E extends Entity>(config: FacadeConfig<E>): RemoveEntities<E> => {
+  return async ({ filter = {} }) => {
+    const table = (await config.db()).table(config.tableName);
+    const constructedFilter = config.constructFilter(filter);
+    await Promise.resolve(filterEntities(table, constructedFilter).delete());
   };
 };

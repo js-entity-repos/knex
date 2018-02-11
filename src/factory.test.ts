@@ -1,8 +1,8 @@
 import facadeTest from '@js-entity-repos/core/dist/tests';
-import { TestEntity, TestId } from '@js-entity-repos/core/dist/tests/utils/testEntity';
+import { TestEntity } from '@js-entity-repos/core/dist/tests/utils/testEntity';
 import { config } from 'dotenv';
 import 'mocha'; // tslint:disable-line:no-import-side-effect
-import facade from './facade';
+import factory from './factory';
 import connectToDb from './utils/connectToDb';
 config();
 
@@ -21,8 +21,9 @@ const db = connectToDb({
 const tableName = 'testentities';
 
 before(async () => {
-  await Promise.resolve(db.schema.dropTableIfExists(tableName));
-  await Promise.resolve(db.schema.createTableIfNotExists(tableName, async (table) => {
+  const schema = (await db()).schema;
+  await Promise.resolve(schema.dropTableIfExists(tableName));
+  await Promise.resolve(schema.createTableIfNotExists(tableName, async (table) => {
     table.string('id').unique();
     table.string('stringProp');
     table.float('numberProp');
@@ -30,9 +31,7 @@ before(async () => {
   }));
 });
 
-facadeTest(facade<TestId, TestEntity>({
-  constructDocument: (id, patch) => ({ ...patch, ...id }),
-  constructEntity: (document) => document,
+facadeTest(factory<TestEntity>({
   db,
   entityName: 'Test Entity',
   tableName,

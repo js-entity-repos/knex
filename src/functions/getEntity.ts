@@ -1,12 +1,15 @@
 import MissingEntityError from '@js-entity-repos/core/dist/errors/MissingEntityError';
 import GetEntity from '@js-entity-repos/core/dist/signatures/GetEntity';
-import Config from '../Config';
+import Entity from '@js-entity-repos/core/dist/types/Entity';
+import FacadeConfig from '../FacadeConfig';
+import constructIdFilter from '../utils/constructIdFilter';
 import filterEntities from '../utils/filterEntities';
 
-export default <Id, Entity extends Id>(config: Config<Id, Entity>): GetEntity<Id, Entity> => {
-  return async ({ id }) => {
-    const table = config.db.table(config.tableName);
-    const document = await Promise.resolve(filterEntities(table, id).first());
+export default <E extends Entity>(config: FacadeConfig<E>): GetEntity<E> => {
+  return async ({ id, filter = {} }) => {
+    const table = (await config.db()).table(config.tableName);
+    const constructedFilter = constructIdFilter({ id, filter, config });
+    const document = await Promise.resolve(filterEntities(table, constructedFilter).first());
 
     if (document === undefined || document === null) {
       throw new MissingEntityError(config.entityName, id);

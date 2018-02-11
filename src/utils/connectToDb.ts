@@ -1,5 +1,8 @@
 import * as knex from 'knex';
+import { once } from 'lodash';
 
 export default (connectionConfig: knex.Config) => {
-  return knex(connectionConfig);
+  return once(async () => {
+    return knex(connectionConfig);
+  });
 };

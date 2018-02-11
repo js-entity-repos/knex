@@ -1,19 +1,20 @@
-// tslint:disable:no-use-before-declare
+// tslint:disable:no-use-before-declare max-file-line-count
+import Entity from '@js-entity-repos/core/dist/types/Entity';
 import {
-  ConditionFilter, // tslint:disable-line:no-unused
+  ConditionFilter,
   EntityFilter,
   Filter,
   PropFilter,
 } from '@js-entity-repos/core/dist/types/Filter';
 import { QueryBuilder } from 'knex';
 
-const addAndToQuery = <Entity>(query: QueryBuilder, filters: Filter<Entity>[]) => {
+const addAndToQuery = <E extends Entity>(query: QueryBuilder, filters: Filter<E>[]) => {
   return filters.reduce((result, filter) => {
     return constructFilter(result, filter);
   }, query);
 };
 
-const addOrToQuery = <Entity>(query: QueryBuilder, filters: Filter<Entity>[]) => {
+const addOrToQuery = <E extends Entity>(query: QueryBuilder, filters: Filter<E>[]) => {
   return filters.reduce((result, filter) => {
     return result.orWhere(function (this: QueryBuilder) {
       // tslint:disable-next-line:no-invalid-this no-this
@@ -22,7 +23,7 @@ const addOrToQuery = <Entity>(query: QueryBuilder, filters: Filter<Entity>[]) =>
   }, query);
 };
 
-const addNorToQuery = <Entity>(query: QueryBuilder, filters: Filter<Entity>[]) => {
+const addNorToQuery = <E extends Entity>(query: QueryBuilder, filters: Filter<E>[]) => {
   return query.whereNot(function (this: QueryBuilder) {
     // tslint:disable-next-line:no-invalid-this no-this
     addOrToQuery(this, filters);
@@ -64,7 +65,7 @@ const constructPropFilter = <Prop>(
   return notQuery;
 };
 
-const constructEntityFilter = <Entity>(query: QueryBuilder, filter: EntityFilter<Entity>) => {
+const constructEntityFilter = <E extends Entity>(query: QueryBuilder, filter: EntityFilter<E>) => {
   return Object.keys(filter).reduce((result, prop) => {
     const filterValue = (filter as any)[prop];
     if (!(filterValue instanceof Object)) {
@@ -75,7 +76,10 @@ const constructEntityFilter = <Entity>(query: QueryBuilder, filter: EntityFilter
   }, query);
 };
 
-const constructFilter = <Entity>(query: QueryBuilder, filter: Filter<Entity>): QueryBuilder => {
+const constructConditionFilter = <E extends Entity>(
+  query: QueryBuilder,
+  filter: ConditionFilter<E>,
+): QueryBuilder => {
   if (filter.$and !== undefined) {
     return addAndToQuery(query, filter.$and);
   }
@@ -85,7 +89,15 @@ const constructFilter = <Entity>(query: QueryBuilder, filter: Filter<Entity>): Q
   if (filter.$nor !== undefined) {
     return addNorToQuery(query, filter.$nor);
   }
-  return constructEntityFilter(query, filter as EntityFilter<Entity>);
+  return query;
+};
+
+const constructFilter = <E extends Entity>(
+  query: QueryBuilder,
+  filter: Filter<E>,
+): QueryBuilder => {
+  const conditionQuery = constructConditionFilter(query, filter as any);
+  return constructEntityFilter(conditionQuery, filter as EntityFilter<E>);
 };
 
 export default constructFilter;
