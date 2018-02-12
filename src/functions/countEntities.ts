@@ -6,7 +6,8 @@ import filterEntities from '../utils/filterEntities';
 export default <E extends Entity>(config: FacadeConfig<E>): CountEntities<E> => {
   return async ({ filter = {} }) => {
     const table = (await config.db()).table(config.tableName);
-    const [result] = await Promise.resolve(filterEntities(table, filter).count());
+    const constructedFilter = config.constructFilter(filter);
+    const [result] = await Promise.resolve(filterEntities(table, constructedFilter).count());
     return { count: result['count(*)'] };
   };
 };
