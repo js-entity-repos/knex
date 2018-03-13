@@ -7,7 +7,7 @@ jobs:
   build:
     docker:
       - image: circleci/node:8
-      - image: circleci/mysql:8.0.3
+      - image: circleci/mysql:8
     environment:
       - NPM_CONFIG_LOGLEVEL: warn
     working_directory: ~/repo
