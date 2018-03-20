@@ -13,5 +13,5 @@ export default interface FacadeConfig<E extends Entity> {
   readonly db: () => Promise<knex>;
   readonly defaultPaginationLimit?: number;
   readonly entityName: string;
-  readonly tableName: string;
+  readonly tableName?: string;
 }

@@ -5,7 +5,6 @@
 1. Install it with `npm i @js-entity-repos/knex`.
 1. For each entity you will need to do the following.
     1. [Create an Entity interface](#entity-interface).
-    1. [Create a factory config](#factory-config).
     1. [Construct the facade](#construct-the-facade).
     1. [Use the facade](https://github.com/js-entity-repos/core/blob/master/docs/facade.md).
 
@@ -20,27 +19,27 @@ export interface TodoEntity extends Entity {
 }
 ```
 
-### Factory Config
+### Construct the Facade
 
 ```ts
-import FactoryConfig from '@js-entity-repos/knex/dist/FactoryConfig';
+import factory from '@js-entity-repos/knex/dist/factory';
 import connectToDb from '@js-entity-repos/knex/dist/utils/connectToDb';
 
-const todoFactoryConfig: FactoryConfig<TodoEntity> = {
+const todosFacade = factory<TodoEntity>({
+  // Optional property to convert an entity to a DB document. Defaults to the function below.
   constructDocument: (patch) => {
-    // Optional property that converts an entity to a document for the database.
     return patch;
   },
+  // Optional property to convert a DB document to an entity. Defaults to the function below.
   constructEntity: (document) => {
-    // Optional property that converts a document from the database to an entity.
     return document;
   },
+  // Optional property to convert an entity filter to a DB filter. Defaults to the function below.
   constructFilter: (filter) => {
-    // Optional property that converts an entity filter to a filter for the DB.
     return filter;
   },
+  // Optional property to convert an entity sort to a DB sort. Defaults to the function below.
   constructSort: (sort) => {
-    // Optional property that converts an entity sort to a sort for the DB.
     return sort;
   }.
   db: connectToDb({
@@ -52,16 +51,10 @@ const todoFactoryConfig: FactoryConfig<TodoEntity> = {
       user: 'todouser',
     },
   }),
-  defaultPaginationLimit: 100, // Optional property.
+  // Optional property. Defaults to 10.
+  defaultPaginationLimit: 10,
   entityName: 'todo',
+  // Optional property. Defaults to the entityName.
   tableName: 'todos',
-};
-```
-
-### Construct the Facade
-
-```ts
-import factory from '@js-entity-repos/knex/dist/factory';
-
-const todosFacade = factory(todoFactoryConfig);
+});
 ```
