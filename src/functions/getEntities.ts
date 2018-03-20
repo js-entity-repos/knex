@@ -1,6 +1,9 @@
 import GetEntities from '@js-entity-repos/core/dist/signatures/GetEntities';
 import Entity from '@js-entity-repos/core/dist/types/Entity';
+import Pagination from '@js-entity-repos/core/dist/types/Pagination';
+import { forward } from '@js-entity-repos/core/dist/types/PaginationDirection';
 import Sort from '@js-entity-repos/core/dist/types/Sort';
+import SortOrder, { asc } from '@js-entity-repos/core/dist/types/SortOrder';
 import createCursorFromEntity from '@js-entity-repos/core/dist/utils/createCursorFromEntity';
 import createPaginationFilter from '@js-entity-repos/core/dist/utils/createPaginationFilter';
 import { first, last, mapValues } from 'lodash';
@@ -12,12 +15,12 @@ const xor = (conditionA: boolean, conditionB: boolean) => {
 };
 
 export default <E extends Entity>(config: FacadeConfig<E>): GetEntities<E> => {
-  const defaultPagination = {
+  const defaultPagination: Pagination = {
     cursor: undefined,
-    forward: true,
+    direction: forward,
     limit: config.defaultPaginationLimit,
   };
-  const defaultSort = { id: true } as Sort<E>;
+  const defaultSort = { id: asc } as Sort<E>;
   return async ({ filter = {}, sort = defaultSort, pagination = defaultPagination }) => {
     const table = (await config.db()).table(config.tableName);
 
@@ -25,8 +28,8 @@ export default <E extends Entity>(config: FacadeConfig<E>): GetEntities<E> => {
     const fullFilter = { $and: [filter, paginationFilter] };
     const constructedFilter = config.constructFilter(fullFilter);
     const constructedSort = config.constructSort(sort);
-    const knexSort = mapValues(constructedSort, (sortValue): string => {
-      return !xor(pagination.forward, sortValue) ? 'asc' : 'desc';
+    const knexSort = mapValues(constructedSort, (sortOrder: SortOrder): string => {
+      return !xor(pagination.direction === forward, sortOrder === asc) ? 'asc' : 'desc';
     });
 
     const filterQuery = filterEntities(table, constructedFilter);
