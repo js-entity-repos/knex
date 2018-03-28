@@ -32,6 +32,12 @@ before(async () => {
 });
 
 facadeTest(factory<TestEntity>({
+  constructEntity: (document) => {
+    return {
+      ...document,
+      booleanProp: document.booleanProp === 1,
+    };
+  },
   db,
   entityName: 'Test Entity',
   tableName,
