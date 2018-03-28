@@ -14,7 +14,10 @@ import replaceEntity from './functions/replaceEntity';
 export default <E extends Entity>(factoryConfig: FactoryConfig<E>): Facade<E> => {
   const facadeConfig: FacadeConfig<E> = {
     constructDocument: (patch) => patch,
-    constructEntity: (document) => document,
+    constructEntity: (document) => {
+      /* istanbul ignore next - Had to be overriden in tests for booleans */
+      return document;
+    },
     constructFilter: (filter) => filter,
     constructSort: (sort) => sort,
     defaultPaginationLimit: 10,
