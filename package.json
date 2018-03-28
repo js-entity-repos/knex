@@ -25,7 +25,7 @@
     "check-coverage": true
   },
   "dependencies": {
-    "@js-entity-repos/core": "^8.0.0",
+    "@js-entity-repos/core": "^9.0.0",
     "knex": "^0.14.2",
     "lodash": "^4.17.4"
   },
