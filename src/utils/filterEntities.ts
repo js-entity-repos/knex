@@ -53,8 +53,11 @@ const constructPropFilter = <Prop>(
   const lteQuery = addOpToQuery(ltQuery, prop, '<=', filterValue.$lte);
   const gtQuery = addOpToQuery(lteQuery, prop, '>', filterValue.$gt);
   const gteQuery = addOpToQuery(gtQuery, prop, '>=', filterValue.$gte);
+  const searchQuery = (filterValue.$search === undefined ? gteQuery :
+    gteQuery.where(prop, 'like', `%${filterValue.$search}%`)
+  );
   const inQuery = (filterValue.$in === undefined ? gteQuery :
-    gteQuery.whereIn(prop, filterValue.$in as any[])
+    searchQuery.whereIn(prop, filterValue.$in as any[])
   );
   const ninQuery = (filterValue.$nin === undefined ? inQuery :
     inQuery.whereNotIn(prop, filterValue.$nin as any[])
