@@ -31,7 +31,7 @@ before(async () => {
   }));
 });
 
-facadeTest(factory<TestEntity>({
+const facade = factory<TestEntity>({
   constructEntity: (document) => {
     return {
       ...document,
@@ -41,4 +41,6 @@ facadeTest(factory<TestEntity>({
   db,
   entityName: 'Test Entity',
   tableName,
-}));
+});
+
+facadeTest(facade);

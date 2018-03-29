@@ -15,12 +15,15 @@ const addAndToQuery = <E extends Entity>(query: QueryBuilder, filters: Filter<E>
 };
 
 const addOrToQuery = <E extends Entity>(query: QueryBuilder, filters: Filter<E>[]) => {
-  return filters.reduce((result, filter) => {
-    return result.orWhere(function (this: QueryBuilder) {
-      // tslint:disable-next-line:no-invalid-this no-this
-      constructFilter(this, filter);
-    });
-  }, query);
+  // tslint:disable:no-invalid-this no-this
+  return query.where(function (this: QueryBuilder) {
+    return filters.reduce((result, filter) => {
+      return result.orWhere(function (this: QueryBuilder) {
+        constructFilter(this, filter);
+      });
+    }, this);
+  });
+  // tslint:enable:no-invalid-this no-this
 };
 
 const addNorToQuery = <E extends Entity>(query: QueryBuilder, filters: Filter<E>[]) => {
@@ -97,7 +100,8 @@ const constructFilter = <E extends Entity>(
   filter: Filter<E>,
 ): QueryBuilder => {
   const conditionQuery = constructConditionFilter(query, filter as any);
-  return constructEntityFilter(conditionQuery, filter as EntityFilter<E>);
+  const finalQuery = constructEntityFilter(conditionQuery, filter as EntityFilter<E>);
+  return finalQuery;
 };
 
 export default constructFilter;
