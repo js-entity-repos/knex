@@ -6,7 +6,8 @@ import filterEntities from '../utils/filterEntities';
 export default <E extends Entity>(config: FacadeConfig<E>): RemoveEntities<E> => {
   return async ({ filter = {} }) => {
     const table = (await config.db()).table(config.tableName);
+    const query = config.constructQuery(table);
     const constructedFilter = config.constructFilter(filter);
-    await Promise.resolve(filterEntities(table, constructedFilter).delete());
+    await Promise.resolve(filterEntities(query, constructedFilter).delete());
   };
 };

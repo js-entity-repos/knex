@@ -8,9 +8,10 @@ const conflictErrorCode = 1062;
 export default <E extends Entity>(config: FacadeConfig<E>): CreateEntity<E> => {
   return async ({ id, entity }) => {
     const table = (await config.db()).table(config.tableName);
+    const query = config.constructQuery(table);
     const document = config.constructDocument({ ...entity as any, id });
     try {
-      await Promise.resolve(table.insert(document));
+      await Promise.resolve(query.insert(document));
     } catch (err) {
       if (err.errno === conflictErrorCode) {
         throw new ConflictingEntityError(config.entityName, id);

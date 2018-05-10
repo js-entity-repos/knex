@@ -24,6 +24,7 @@ export default <E extends Entity>(config: FacadeConfig<E>): GetEntities<E> => {
   const defaultSort = { id: asc } as Sort<E>;
   return async ({ filter = {}, sort = defaultSort, pagination = defaultPagination }) => {
     const table = (await config.db()).table(config.tableName);
+    const query = config.constructQuery(table);
     const paginationFilter = createPaginationFilter(pagination, sort);
     const fullFilter = { $and: [filter, paginationFilter] };
     const constructedFilter = config.constructFilter(fullFilter);
@@ -32,7 +33,7 @@ export default <E extends Entity>(config: FacadeConfig<E>): GetEntities<E> => {
       return !xor(pagination.direction === forward, sortOrder === asc) ? 'asc' : 'desc';
     });
 
-    const filterQuery = filterEntities(table, constructedFilter);
+    const filterQuery = filterEntities(query, constructedFilter);
     const sortQuery = Object.keys(knexSort).reduce((result, sortKey) => {
       return result.orderBy(sortKey, (knexSort as any)[sortKey]);
     }, filterQuery);

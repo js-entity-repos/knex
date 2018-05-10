@@ -8,8 +8,9 @@ import filterEntities from '../utils/filterEntities';
 export default <E extends Entity>(config: FacadeConfig<E>): RemoveEntity<E> => {
   return async ({ id, filter = {} }) => {
     const table = (await config.db()).table(config.tableName);
+    const query = config.constructQuery(table);
     const constructedFilter = constructIdFilter({ id, filter, config });
-    const count = await Promise.resolve(filterEntities(table, constructedFilter).delete());
+    const count = await Promise.resolve(filterEntities(query, constructedFilter).delete());
 
     if (count === 0) {
       throw new MissingEntityError(config.entityName, id);

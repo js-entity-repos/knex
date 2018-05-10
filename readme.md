@@ -38,10 +38,14 @@ const todosFacade = factory<TodoEntity>({
   constructFilter: (filter) => {
     return filter;
   },
+  // Optional property to construct an initial database query. Defaults to the function below.
+  constrctQuery: (table) => {
+    return table;
+  },
   // Optional property to convert an entity sort to a DB sort. Defaults to the function below.
   constructSort: (sort) => {
     return sort;
-  }.
+  },
   db: connectToDb({
     client: 'mysql',
     connection: {
