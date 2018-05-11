@@ -9,7 +9,7 @@ export default interface FacadeConfig<E extends Entity> {
   readonly constructDocument?: (patch: Partial<E>) => Document;
   readonly constructEntity?: (document: Document) => E;
   readonly constructFilter?: (filter: Filter<E>) => any;
-  readonly constructQuery?: (table: knex.QueryBuilder) => knex.QueryBuilder;
+  readonly constructQuery?: (table: knex) => knex.QueryBuilder;
   readonly constructSort?: (sort: Sort<E>) => any;
   readonly db: () => Promise<knex>;
   readonly defaultPaginationLimit?: number;

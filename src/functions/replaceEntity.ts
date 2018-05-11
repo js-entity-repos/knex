@@ -7,8 +7,8 @@ import filterEntities from '../utils/filterEntities';
 
 export default <E extends Entity>(config: FacadeConfig<E>): ReplaceEntity<E> => {
   return async ({ id, entity, filter = {} }) => {
-    const table = (await config.db()).table(config.tableName);
-    const query = config.constructQuery(table);
+    const db = (await config.db());
+    const query = config.constructQuery(db);
     const document = config.constructDocument({ ...entity as any, id });
     const constructedFilter = constructIdFilter({ id, filter, config });
     const res = await Promise.resolve(filterEntities(query, constructedFilter).update(document));

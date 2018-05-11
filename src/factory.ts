@@ -19,7 +19,9 @@ export default <E extends Entity>(factoryConfig: FactoryConfig<E>): Facade<E> =>
       return document;
     },
     constructFilter: (filter) => filter,
-    constructQuery: (table) => table,
+    constructQuery: (db) => {
+      return db.table(facadeConfig.tableName);
+    },
     constructSort: (sort) => sort,
     defaultPaginationLimit: 10,
     tableName: factoryConfig.entityName,

@@ -23,8 +23,8 @@ export default <E extends Entity>(config: FacadeConfig<E>): GetEntities<E> => {
   };
   const defaultSort = { id: asc } as Sort<E>;
   return async ({ filter = {}, sort = defaultSort, pagination = defaultPagination }) => {
-    const table = (await config.db()).table(config.tableName);
-    const query = config.constructQuery(table);
+    const db = (await config.db());
+    const query = config.constructQuery(db);
     const paginationFilter = createPaginationFilter(pagination, sort);
     const fullFilter = { $and: [filter, paginationFilter] };
     const constructedFilter = config.constructFilter(fullFilter);

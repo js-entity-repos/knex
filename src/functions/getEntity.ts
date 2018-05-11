@@ -7,8 +7,8 @@ import filterEntities from '../utils/filterEntities';
 
 export default <E extends Entity>(config: FacadeConfig<E>): GetEntity<E> => {
   return async ({ id, filter = {} }) => {
-    const table = (await config.db()).table(config.tableName);
-    const query = config.constructQuery(table);
+    const db = (await config.db());
+    const query = config.constructQuery(db);
     const constructedFilter = constructIdFilter({ id, filter, config });
     const document = await Promise.resolve(filterEntities(query, constructedFilter).first());
 

@@ -39,8 +39,8 @@ const todosFacade = factory<TodoEntity>({
     return filter;
   },
   // Optional property to construct an initial database query. Defaults to the function below.
-  constrctQuery: (table) => {
-    return table;
+  constructQuery: (db) => {
+    return db.table('todos');
   },
   // Optional property to convert an entity sort to a DB sort. Defaults to the function below.
   constructSort: (sort) => {
