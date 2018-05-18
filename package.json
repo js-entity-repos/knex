@@ -39,7 +39,7 @@
     "assert-rejects": "0.1.1",
     "dotenv": "5.0.1",
     "jscpd": "0.6.17",
-    "mocha": "5.1.1",
+    "mocha": "5.2.0",
     "mysql": "2.15.0",
     "nyc": "11.8.0",
     "power-assert": "1.5.0",
