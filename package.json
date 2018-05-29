@@ -26,7 +26,7 @@
   },
   "dependencies": {
     "@js-entity-repos/core": "9.1.1",
-    "knex": "0.14.3",
+    "knex": "0.14.6",
     "lodash": "4.17.5"
   },
   "devDependencies": {
