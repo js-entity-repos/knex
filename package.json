@@ -35,7 +35,7 @@
     "@types/dotenv": "4.0.3",
     "@types/knex": "0.14.14",
     "@types/lodash": "4.14.109",
-    "@types/mocha": "5.2.0",
+    "@types/mocha": "5.2.1",
     "assert-rejects": "0.1.1",
     "dotenv": "5.0.1",
     "jscpd": "0.6.18",
