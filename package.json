@@ -38,7 +38,7 @@
     "@types/mocha": "5.2.2",
     "assert-rejects": "0.1.1",
     "dotenv": "5.0.1",
-    "jscpd": "0.6.20",
+    "jscpd": "0.6.21",
     "mocha": "5.2.0",
     "mysql": "2.15.0",
     "nyc": "11.9.0",
