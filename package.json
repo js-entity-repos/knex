@@ -34,7 +34,7 @@
     "@ht2-labs/typescript-project": "1.0.23",
     "@types/dotenv": "4.0.3",
     "@types/knex": "0.14.17",
-    "@types/lodash": "4.14.114",
+    "@types/lodash": "4.14.115",
     "@types/mocha": "5.2.5",
     "assert-rejects": "0.1.1",
     "dotenv": "5.0.1",
