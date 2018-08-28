@@ -33,7 +33,7 @@
     "@ht2-labs/semantic-release": "1.1.18",
     "@ht2-labs/typescript-project": "1.0.26",
     "@types/dotenv": "4.0.3",
-    "@types/knex": "0.14.21",
+    "@types/knex": "0.14.22",
     "@types/lodash": "4.14.116",
     "@types/mocha": "5.2.5",
     "assert-rejects": "0.1.1",
