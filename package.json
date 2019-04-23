@@ -26,14 +26,14 @@
   },
   "dependencies": {
     "@js-entity-repos/core": "9.1.1",
-    "knex": "0.16.2",
+    "knex": "0.16.5",
     "lodash": "4.17.11"
   },
   "devDependencies": {
     "@ht2-labs/semantic-release": "1.1.64",
     "@ht2-labs/typescript-project": "1.1.0",
     "@types/dotenv": "4.0.3",
-    "@types/knex": "0.15.1",
+    "@types/knex": "0.15.2",
     "@types/lodash": "4.14.119",
     "@types/mocha": "5.2.5",
     "assert-rejects": "0.1.1",
