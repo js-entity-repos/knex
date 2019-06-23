@@ -6,7 +6,7 @@ machine:
 jobs:
   build:
     docker:
-      - image: circleci/node:8@sha256:9dfc68e8657a16499f534e8b24b595d957e99af67e66d7e8bb07facac38a16ef
+      - image: circleci/node:8@sha256:f73a33dd0b8441e6d5172a8983114e20bf56e61e53c14143988e003f61a233ee
       - image: circleci/mysql:8.0.3@sha256:ea4c062323a944b9152137a62f5b2c8b3d5e235d98af66675871506a1bf6cc6e
     environment:
       - NPM_CONFIG_LOGLEVEL: warn
