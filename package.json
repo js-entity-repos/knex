@@ -30,7 +30,7 @@
     "lodash": "4.17.14"
   },
   "devDependencies": {
-    "@ht2-labs/semantic-release": "1.1.80",
+    "@ht2-labs/semantic-release": "1.1.81",
     "@ht2-labs/typescript-project": "1.1.0",
     "@types/dotenv": "4.0.3",
     "@types/knex": "0.15.2",
