@@ -27,7 +27,7 @@
   "dependencies": {
     "@js-entity-repos/core": "9.1.1",
     "knex": "0.16.5",
-    "lodash": "4.17.14"
+    "lodash": "4.17.15"
   },
   "devDependencies": {
     "@ht2-labs/semantic-release": "1.1.81",
